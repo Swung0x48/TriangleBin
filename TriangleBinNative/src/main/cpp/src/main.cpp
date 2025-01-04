@@ -153,9 +153,9 @@ int main(int argc, char** argv)
 #endif
     // Create window
     Log(LOG_INFO) << "Creating SDL_Window";
-    SDL_Window *window = SDL_CreateWindow("Shade Order Tester", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1280, 800, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+    SDL_Window *window = SDL_CreateWindow("Shade Order Tester", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1280, 800, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
     SDL_GLContext ctx = createCtx(window);
-#ifdef WIN32
+#ifndef __ANDROID__
     if (glewInit() != GLEW_OK) {
         Log(LOG_FATAL) << "Cannot init glew.";
         return 1;

@@ -360,11 +360,8 @@ void ImGui_ImplSdlGL3_NewFrame(SDL_Window* window)
 
     // Setup display size (every frame to accommodate for window resizing)
     int w, h;
-    int display_w, display_h;
-    SDL_GetWindowSize(window, &w, &h);
-    SDL_GL_GetDrawableSize(window, &display_w, &display_h);
+    SDL_GetWindowSizeInPixels(window, &w, &h);
     io.DisplaySize = ImVec2((float)w, (float)h);
-    io.DisplayFramebufferScale = ImVec2(w > 0 ? ((float)display_w / w) : 0, h > 0 ? ((float)display_h / h) : 0);
 
     // Setup time step
     Uint32	time = SDL_GetTicks();
@@ -375,9 +372,11 @@ void ImGui_ImplSdlGL3_NewFrame(SDL_Window* window)
     // Setup inputs
     // (we already got mouse wheel, keyboard keys & characters from SDL_PollEvent())
     int mx, my;
+    int fakew, fakeh;
+    SDL_GetWindowSize(window, &fakew, &fakeh);
     Uint32 mouseMask = SDL_GetMouseState(&mx, &my);
     if (SDL_GetWindowFlags(window) & SDL_WINDOW_MOUSE_FOCUS)
-        io.MousePos = ImVec2((float)mx, (float)my);   // Mouse position, in pixels (set to -1,-1 if no mouse / on another screen, etc.)
+        io.MousePos = ImVec2((float)mx*(w/fakew), (float)my*(h/fakeh));   // Mouse position, in pixels (set to -1,-1 if no mouse / on another screen, etc.)
     else
         io.MousePos = ImVec2(-1, -1);
 
